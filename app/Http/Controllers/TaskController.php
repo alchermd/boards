@@ -77,7 +77,19 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $validatedData = $request->validate([
+            'body' => 'required|min:2',
+            'status' => Rule::in(0, 1, 2),
+        ]);
+
+        $task->body = array_key_exists('body', $validatedData) ?
+            $validatedData['body'] : $task->body;
+        $task->status = array_key_exists('status', $validatedData) ?
+            $validatedData['status'] : $task->status;
+
+        $task->save();
+
+        return response()->json($task->toJson(), 204);
     }
 
     /**

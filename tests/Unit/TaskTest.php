@@ -51,4 +51,21 @@ class TaskTest extends TestCase
 
         $response->assertJson($task->toArray());
     }
+
+    /** @test */
+    public function can_update_a_specific_task()
+    {
+        $task = factory(Task::class)->create();
+
+        $response = $this->put('/api/tasks/' . $task->id, [
+            'body' => "I'm updated!",
+        ]);
+
+        $response->assertStatus(204);
+
+        $this->assertEquals(
+            (Task::find($task->id))->body,
+            "I'm updated!"
+        );
+    }
 }
