@@ -41,4 +41,14 @@ class TaskTest extends TestCase
             'status' => 0,
         ]);
     }
+
+    /** @test */
+    public function can_get_a_specific_task()
+    {
+        $task = factory(Task::class)->create();
+
+        $response = $this->get('/api/tasks/' . $task->id);
+
+        $response->assertJson($task->toArray());
+    }
 }
