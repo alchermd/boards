@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Task;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TaskController extends Controller
 {
@@ -35,7 +36,14 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'body' => 'required|min:2',
+            'status' => Rule::in(0, 1, 2),
+        ]);
+
+        Task::create($validatedData);
+
+        return response()->json(['created' => true], 201);
     }
 
     /**
