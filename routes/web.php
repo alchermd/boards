@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/api/tasks', 'TaskController');
+Route::apiResource('/api/tasks', 'TaskController');
