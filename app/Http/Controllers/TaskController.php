@@ -89,7 +89,7 @@ class TaskController extends Controller
 
         $task->save();
 
-        return response()->json($task->toJson(), 204);
+        return response()->json($task->toJson(), 200);
     }
 
     /**
@@ -100,6 +100,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $task->delete();
+
+        return response()->json(['deleted' => true], 200);
     }
 }

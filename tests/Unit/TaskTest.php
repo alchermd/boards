@@ -25,7 +25,7 @@ class TaskTest extends TestCase
     /** @test */
     public function can_create_new_tasks()
     {
-        $response = $this->json('POST', '/api/tasks', [
+        $response = $this->post('/api/tasks', [
             'body' => 'Sample task.',
             'status' => 0,
         ]);
@@ -61,11 +61,26 @@ class TaskTest extends TestCase
             'body' => "I'm updated!",
         ]);
 
-        $response->assertStatus(204);
+        $response->assertStatus(200);
 
         $this->assertEquals(
             (Task::find($task->id))->body,
             "I'm updated!"
         );
+    }
+
+    /** @test */
+    public function can_delete_a_specific_task()
+    {
+        $task = factory(Task::class)->create();
+
+        $response = $this->delete('/api/tasks/' . $task->id);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'deleted' => 'true'
+            ]);
+
+        $this->assertDatabaseMissing('tasks', ['id', $task->id]);
     }
 }
