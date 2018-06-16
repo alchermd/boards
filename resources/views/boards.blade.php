@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Kanban Board</title>
+    <link rel="stylesheet" href="/css/app.css">
 </head>
 <body>
     <div id="root"></div>

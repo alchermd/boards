@@ -10411,9 +10411,10 @@ a.text-dark:focus {
   }
 }
 
-.navbar-laravel {
-  background-color: #fff;
-  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+.Column {
+  padding: 10px;
+  border: 1px solid black;
+  min-height: 350px;
+  border-radius: 2.5%;
 }
 
