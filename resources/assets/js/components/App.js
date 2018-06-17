@@ -1,16 +1,21 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Column from "./Column";
+import NewTaskInput from "./NewTaskInput";
 
 export default class App extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            newTaskText: "",
             todo: [],
             doing: [],
             completed: []
         };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -39,10 +44,45 @@ export default class App extends Component {
             );
     }
 
+    addNewTask(task) {
+        fetch("/api/tasks/", {
+            body: JSON.stringify(task),
+            credentials: "same-origin",
+            headers: {
+                "content-type": "application/json",
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content")
+            },
+            method: "POST"
+        })
+            .catch(err => console.log(err))
+            .then(res => this.setState({ todo: [...this.state.todo, task] }));
+    }
+
+    handleChange(event) {
+        this.setState({ newTaskText: event.target.value });
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+
+        this.setState({ newTaskText: "" });
+        this.addNewTask({ body: this.state.newTaskText, status: 0 });
+    }
+
     render() {
         return (
             <div className="container-fluid pt-3">
                 <h1 className="text-center">Kanban Board</h1>
+
+                <div className="row flex-row flex-sm-nowrap">
+                    <NewTaskInput
+                        value={this.state.newTaskText}
+                        onChange={this.handleChange}
+                        onSubmit={this.handleSubmit}
+                    />
+                </div>
 
                 <div className="row flex-row flex-sm-nowrap py-5">
                     <Column title="To-Do" tasks={this.state.todo} />

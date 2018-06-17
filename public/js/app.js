@@ -378,6 +378,20 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+if (false) {
+  module.exports = require('./cjs/react.production.min.js');
+} else {
+  module.exports = __webpack_require__(44);
+}
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(0);
@@ -476,20 +490,6 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-if (false) {
-  module.exports = require('./cjs/react.production.min.js');
-} else {
-  module.exports = __webpack_require__(44);
-}
-
 
 /***/ }),
 /* 3 */
@@ -14046,7 +14046,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(18);
-module.exports = __webpack_require__(59);
+module.exports = __webpack_require__(60);
 
 
 /***/ }),
@@ -35220,7 +35220,7 @@ module.exports = __webpack_require__(24);
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(9);
 var Axios = __webpack_require__(26);
-var defaults = __webpack_require__(1);
+var defaults = __webpack_require__(2);
 
 /**
  * Create an instance of Axios
@@ -35303,7 +35303,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(1);
+var defaults = __webpack_require__(2);
 var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(36);
 var dispatchRequest = __webpack_require__(37);
@@ -36032,7 +36032,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(38);
 var isCancel = __webpack_require__(12);
-var defaults = __webpack_require__(1);
+var defaults = __webpack_require__(2);
 var isAbsoluteURL = __webpack_require__(39);
 var combineURLs = __webpack_require__(40);
 
@@ -36288,11 +36288,12 @@ module.exports = function spread(callback) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Column__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__NewTaskInput__ = __webpack_require__(59);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -36307,6 +36308,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
+
 var App = function (_Component) {
     _inherits(App, _Component);
 
@@ -36316,10 +36318,14 @@ var App = function (_Component) {
         var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
         _this.state = {
+            newTaskText: "",
             todo: [],
             doing: [],
             completed: []
         };
+
+        _this.handleChange = _this.handleChange.bind(_this);
+        _this.handleSubmit = _this.handleSubmit.bind(_this);
         return _this;
     }
 
@@ -36353,6 +36359,38 @@ var App = function (_Component) {
             });
         }
     }, {
+        key: "addNewTask",
+        value: function addNewTask(task) {
+            var _this3 = this;
+
+            fetch("/api/tasks/", {
+                body: JSON.stringify(task),
+                credentials: "same-origin",
+                headers: {
+                    "content-type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                },
+                method: "POST"
+            }).catch(function (err) {
+                return console.log(err);
+            }).then(function (res) {
+                return _this3.setState({ todo: [].concat(_toConsumableArray(_this3.state.todo), [task]) });
+            });
+        }
+    }, {
+        key: "handleChange",
+        value: function handleChange(event) {
+            this.setState({ newTaskText: event.target.value });
+        }
+    }, {
+        key: "handleSubmit",
+        value: function handleSubmit(event) {
+            event.preventDefault();
+
+            this.setState({ newTaskText: "" });
+            this.addNewTask({ body: this.state.newTaskText, status: 0 });
+        }
+    }, {
         key: "render",
         value: function render() {
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -36362,6 +36400,15 @@ var App = function (_Component) {
                     "h1",
                     { className: "text-center" },
                     "Kanban Board"
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "div",
+                    { className: "row flex-row flex-sm-nowrap" },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__NewTaskInput__["a" /* default */], {
+                        value: this.state.newTaskText,
+                        onChange: this.handleChange,
+                        onSubmit: this.handleSubmit
+                    })
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     "div",
@@ -37964,7 +38011,7 @@ if (true) {
 'use strict';
 
 var invariant = __webpack_require__(3);
-var React = __webpack_require__(2);
+var React = __webpack_require__(1);
 var warning = __webpack_require__(4);
 var ExecutionEnvironment = __webpack_require__(48);
 var _assign = __webpack_require__(14);
@@ -55791,7 +55838,7 @@ module.exports = camelize;
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = Column;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
 
@@ -55824,6 +55871,43 @@ function Column(props) {
 
 /***/ }),
 /* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = NewTaskInput;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+function NewTaskInput(props) {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        "div",
+        { className: "col-md-4 offset-md-4" },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            "form",
+            { className: "input-group mb-3", onSubmit: props.onSubmit },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+                type: "text",
+                className: "form-control",
+                placeholder: "I'm thinking of ...",
+                value: props.value,
+                onChange: props.onChange
+            }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "div",
+                { className: "input-group-append" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+                    className: "btn btn-outline-secondary",
+                    type: "submit",
+                    value: "+ Add Task"
+                })
+            )
+        )
+    );
+}
+
+/***/ }),
+/* 60 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
