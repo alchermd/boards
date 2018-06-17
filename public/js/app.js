@@ -55891,7 +55891,9 @@ function NewTaskInput(props) {
                 className: "form-control",
                 placeholder: "I'm thinking of ...",
                 value: props.value,
-                onChange: props.onChange
+                onChange: props.onChange,
+                required: true,
+                minLength: 5
             }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 "div",

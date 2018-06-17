@@ -10,6 +10,8 @@ export default function NewTaskInput(props) {
                     placeholder="I'm thinking of ..."
                     value={props.value}
                     onChange={props.onChange}
+                    required
+                    minLength={5}
                 />
 
                 <div className="input-group-append">
