@@ -9,7 +9,34 @@ export default function Column(props) {
                 {
                     <ul>
                         {props.tasks.map((task, index) => {
-                            return <li key={index}>{task.body}</li>;
+                            return (
+                                <li key={index}>
+                                    {task.body}
+
+                                    <div>
+                                        {props.controls.map(
+                                            (control, index) => {
+                                                return (
+                                                    <span
+                                                        style={{
+                                                            color: "blue",
+                                                            textDecoration:
+                                                                "underline",
+                                                            cursor: "pointer",
+                                                            display:
+                                                                "inline-block",
+                                                            margin: "2px 5px"
+                                                        }}
+                                                        key={index}
+                                                    >
+                                                        {control}
+                                                    </span>
+                                                );
+                                            }
+                                        )}
+                                    </div>
+                                </li>
+                            );
                         })}
                     </ul>
                 }

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Column from "./Column";
 import NewTaskInput from "./NewTaskInput";
+import Control from "./Control";
 
 export default class App extends Component {
     constructor(props) {
@@ -85,9 +86,28 @@ export default class App extends Component {
                 </div>
 
                 <div className="row flex-row flex-sm-nowrap py-5">
-                    <Column title="To-Do" tasks={this.state.todo} />
-                    <Column title="Doing" tasks={this.state.doing} />
-                    <Column title="Completed" tasks={this.state.completed} />
+                    <Column
+                        title="To-Do"
+                        tasks={this.state.todo}
+                        controls={[
+                            <Control text="Edit" />,
+                            <Control text={"→ Doing"} />
+                        ]}
+                    />
+                    <Column
+                        title="Doing"
+                        tasks={this.state.doing}
+                        controls={[
+                            <Control text="← To-Do" />,
+                            <Control text="Edit" />,
+                            <Control text={"→ Done"} />
+                        ]}
+                    />
+                    <Column
+                        title="Completed"
+                        tasks={this.state.completed}
+                        controls={[<Control text="Edit" />]}
+                    />
                 </div>
             </div>
         );
